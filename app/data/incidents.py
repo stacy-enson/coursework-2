@@ -4,11 +4,8 @@ import pandas as pd
 from app.data.db import connect_database
 # Insert a new incident into the cyber_incidents table
 
-def insert_incident(date, incident_type, severity, status, description, reported_by=None):
-    """
-    Insert a new cyber incident record into the database.
-    Returns the ID of the newly inserted incident.
-    """
+def insert_incident(conn, date, incident_type, severity, status, description, reported_by=None):
+    
     conn = connect_database()
     cursor = conn.cursor()
 
@@ -19,10 +16,7 @@ def insert_incident(date, incident_type, severity, status, description, reported
     """, (date, incident_type, severity, status, description, reported_by))
 
     conn.commit()
-    incident_id = cursor.lastrowid   
-    conn.close()
-
-    return incident_id
+    return cursor.lastrowid
 # Get all incidents as a pandas DataFrame
 def get_all_incidents():
     """
